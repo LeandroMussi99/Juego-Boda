@@ -1,0 +1,11 @@
+spring.application.name=back
+
+# Conexión a la base de datos
+spring.datasource.url=jdbc:mysql://localhost:3306/juego_boda?serverTimezone=UTC
+spring.datasource.username=NOMBRE
+spring.datasource.password=TU_CONTRASEÑA
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# Configuración de Hibernate/JPA
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
