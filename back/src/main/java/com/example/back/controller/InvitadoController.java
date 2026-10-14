@@ -5,18 +5,19 @@ import com.example.back.dto.RankingResponseDTO;
 import com.example.back.entity.Invitado;
 import com.example.back.service.InvitadoService;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/invitados")
-@CrossOrigin(origins = "*") 
+@CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class InvitadoController {
 
-    @Autowired
     private InvitadoService invitadoService;
 
 

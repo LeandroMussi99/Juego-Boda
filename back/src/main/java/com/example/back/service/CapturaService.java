@@ -7,7 +7,9 @@ import com.example.back.entity.Mision;
 import com.example.back.repository.CapturaRepository;
 import com.example.back.repository.InvitadoRepository;
 import com.example.back.repository.MisionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +17,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CapturaService {
-
-    @Autowired
+    
     private CapturaRepository capturaRepository;
-    @Autowired
     private InvitadoRepository invitadoRepository;
-    @Autowired
     private MisionRepository misionRepository;
 
     @Transactional

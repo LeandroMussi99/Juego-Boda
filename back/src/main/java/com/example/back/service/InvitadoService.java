@@ -3,16 +3,18 @@ package com.example.back.service;
 import com.example.back.dto.RankingResponseDTO;
 import com.example.back.entity.Invitado;
 import com.example.back.repository.InvitadoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class InvitadoService {
 
-    @Autowired
     private InvitadoRepository invitadoRepository;
 
     // Lógica del Login: Si el nombre existe, lo devuelve. Si no existe, lo crea y lo guarda.

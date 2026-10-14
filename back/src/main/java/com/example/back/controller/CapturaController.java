@@ -4,18 +4,19 @@ import com.example.back.dto.CapturaRequestDTO;
 import com.example.back.entity.Captura;
 import com.example.back.service.CapturaService;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/capturas")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class CapturaController {
 
-    @Autowired
     private CapturaService capturaService;
 
     @PostMapping
