@@ -1,0 +1,81 @@
+/* ListaMisiones.module.css */
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tarjeta {
+  border: 1px solid #e0e0e0;
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+/* Estilo que se aplica solo cuando la misión ya se cumplió */
+.tarjetaCompletada {
+  background-color: #f8f9fa;
+  border-color: #c3e6cb;
+  opacity: 0.8;
+}
+
+.infoMision {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.descripcion {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.descripcionCompletada {
+  color: #28a745;
+  text-decoration: line-through;
+}
+
+.acciones {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.puntos {
+  background-color: #f0f0f0;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #555;
+}
+
+.botonLabel {
+  background-color: #007BFF;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+
+.botonCargando {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.botonCompletado {
+  background-color: #28a745;
+  cursor: default;
+}

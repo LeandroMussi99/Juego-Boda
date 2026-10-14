@@ -3,6 +3,9 @@ package com.example.back.controller;
 import com.example.back.dto.CapturaRequestDTO;
 import com.example.back.entity.Captura;
 import com.example.back.service.CapturaService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,5 +26,10 @@ public class CapturaController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/completadas/{invitadoId}")
+    public ResponseEntity<List<Long>> obtenerCompletadas(@PathVariable Long invitadoId) {
+        return ResponseEntity.ok(capturaService.obtenerMisionesCompletadas(invitadoId));
     }
 }

@@ -24,5 +24,4 @@ public class Mision {
     @Column(nullable = false)
     private Integer puntos;
 
-    private String icono;
 }

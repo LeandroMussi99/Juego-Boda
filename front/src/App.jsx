@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
+import Ranking from './pages/Ranking';
 import ListaMisiones from './components/ListaMisiones';
+import MenuNavegacion from './components/MenuNavegacion';
 
 function App() {
   const [invitado, setInvitado] = useState(() => {
@@ -18,7 +21,6 @@ function App() {
     localStorage.removeItem('invitadoBoda');
   };
 
-  // Función que le pasamos a la lista para sumar los puntos en tiempo real
   const sumarPuntos = (puntosGanados) => {
     const invitadoActualizado = { ...invitado, puntosTotales: invitado.puntosTotales + puntosGanados };
     setInvitado(invitadoActualizado);
@@ -26,11 +28,12 @@ function App() {
   };
 
   return (
-    <div>
+    <BrowserRouter>
       {!invitado ? (
         <Login alCompletarLogin={manejarLogin} />
       ) : (
-        <div style={{ maxWidth: '500px', margin: '0 auto', fontFamily: 'sans-serif', padding: '10px' }}>
+        <div style={{ maxWidth: '500px', margin: '0 auto', fontFamily: 'sans-serif', padding: '10px', paddingBottom: '80px' }}>
+          
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f8f9fa', padding: '15px', borderRadius: '12px', marginBottom: '20px' }}>
             <div>
               <h3 style={{ margin: 0, color: '#333' }}>👤 {invitado.nombre}</h3>
@@ -44,12 +47,16 @@ function App() {
             </button>
           </div>
 
-          {/* Le pasamos el ID del invitado y la función para sumar puntos */}
-          <ListaMisiones invitadoId={invitado.id} onMisionCompletada={sumarPuntos} />
+          <Routes>
+            <Route path="/" element={<ListaMisiones invitadoId={invitado.id} onMisionCompletada={sumarPuntos} />} />
+            <Route path="/ranking" element={<Ranking />} />
+          </Routes>
+          
+          <MenuNavegacion />
           
         </div>
       )}
-    </div>
+    </BrowserRouter>
   );
 }
 

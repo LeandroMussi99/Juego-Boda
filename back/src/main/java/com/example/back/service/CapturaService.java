@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class CapturaService {
@@ -49,5 +50,12 @@ public class CapturaService {
         invitadoRepository.save(invitado);
 
         return captura;
+    }
+
+    public List<Long> obtenerMisionesCompletadas(Long invitadoId) {
+        return capturaRepository.findByInvitadoId(invitadoId)
+                .stream()
+                .map(captura -> captura.getMision().getId())
+                .toList();
     }
 }

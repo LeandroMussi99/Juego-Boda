@@ -1,10 +1,12 @@
 package com.example.back.service;
 
+import com.example.back.dto.RankingResponseDTO;
 import com.example.back.entity.Invitado;
 import com.example.back.repository.InvitadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,5 +27,12 @@ public class InvitadoService {
         nuevoInvitado.setNombre(nombre);
         
         return invitadoRepository.save(nuevoInvitado);
+    }
+
+    public List<RankingResponseDTO> obtenerRanking() {
+        return invitadoRepository.findTop10ByOrderByPuntosTotalesDescUltimaMisionCompletadaAsc()
+                .stream()
+                .map(invitado -> new RankingResponseDTO(invitado.getNombre(), invitado.getPuntosTotales()))
+                .toList();
     }
 }

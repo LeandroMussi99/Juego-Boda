@@ -4,8 +4,12 @@ import com.example.back.entity.Captura;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CapturaRepository extends JpaRepository<Captura, Long> {
     // Para la regla anti-trampas: verificamos si ya existe una foto de este invitado para esta misión
     boolean existsByInvitadoIdAndMisionId(Long invitadoId, Long misionId);
+
+    List<Captura> findByInvitadoId(Long invitadoId);
 }
