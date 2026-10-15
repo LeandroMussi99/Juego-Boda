@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MisionController {
 
-    private MisionService misionService;
+    private final MisionService misionService;
 
     @GetMapping
     public ResponseEntity<List<Mision>> obtenerMisiones() {

@@ -7,4 +7,6 @@ import lombok.Setter;
 @Setter
 public class LoginRequestDTO {
     private String nombre;
+    private Integer numeroMesa;
+    private String fotoPerfilUrl;
 }

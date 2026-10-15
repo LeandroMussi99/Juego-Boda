@@ -18,13 +18,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class InvitadoController {
 
-    private InvitadoService invitadoService;
+    private final InvitadoService invitadoService;
 
 
     @PostMapping("/login")
     public ResponseEntity<Invitado> login(@RequestBody LoginRequestDTO request) {
-        Invitado invitado = invitadoService.loginORegistro(request.getNombre());
-        return ResponseEntity.ok(invitado);
+        return ResponseEntity.ok(invitadoService.login(request));
     }
 
     @GetMapping("/ranking")

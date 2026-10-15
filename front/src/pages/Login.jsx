@@ -1,13 +1,42 @@
 import { useState } from 'react';
+import styles from './Login.module.css';
 
 const Login = ({ alCompletarLogin }) => {
   const [nombre, setNombre] = useState('');
+  const [numeroMesa, setNumeroMesa] = useState('');
+  
+  const [fotoUrl, setFotoUrl] = useState(null);
+  const [subiendoFoto, setSubiendoFoto] = useState(false);
   const [cargando, setCargando] = useState(false);
+
+  const manejarSubidaFoto = async (e) => {
+    const archivo = e.target.files[0];
+    if (!archivo) return;
+
+    setSubiendoFoto(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', archivo);
+      formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+
+      const resCloudinary = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      const dataCloudinary = await resCloudinary.json();
+      setFotoUrl(dataCloudinary.secure_url); 
+    } catch (error) {
+      alert('Hubo un error al subir la foto. Podés intentar de nuevo o entrar sin foto.');
+    } finally {
+      setSubiendoFoto(false);
+    }
+  };
 
   const manejarIngreso = async (e) => {
     e.preventDefault();
     
-    if (nombre.trim() === '') return;
+    if (!nombre.trim() || !numeroMesa) return;
 
     setCargando(true);
     
@@ -15,11 +44,17 @@ const Login = ({ alCompletarLogin }) => {
       const respuesta = await fetch('http://localhost:8080/api/invitados/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre: nombre.trim() })
+        body: JSON.stringify({ 
+          nombre: nombre.trim(),
+          numeroMesa: parseInt(numeroMesa),
+          fotoPerfilUrl: fotoUrl 
+        })
       });
       
+      if (!respuesta.ok) throw new Error('Error al conectar');
+
       const datosInvitado = await respuesta.json();
-      alCompletarLogin(datosInvitado);
+      alCompletarLogin(datosInvitado); 
     } catch (error) {
       console.error('Error al conectarse con el servidor:', error);
       alert('Hubo un error al intentar ingresar. Revisa que el servidor esté corriendo.');
@@ -29,34 +64,55 @@ const Login = ({ alCompletarLogin }) => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'sans-serif', padding: '20px' }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '10px' }}>🕵️‍♂️ Juego de Espías</h1>
-      <p style={{ textAlign: 'center', color: '#666', marginBottom: '30px' }}>Ingresa tu nombre para empezar a cumplir misiones.</p>
-      
-      <form onSubmit={manejarIngreso} style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%', maxWidth: '300px' }}>
+    <div className={styles.contenedor}>
+      <form className={styles.tarjeta} onSubmit={manejarIngreso}>
+        <h1 className={styles.titulo}>🕵️‍♂️ Juego de Espías</h1>
+        <p className={styles.subtitulo}>Identificate para empezar tu misión.</p>
+
+        <div className={styles.fotoContainer}>
+          {fotoUrl ? (
+            <img src={fotoUrl} alt="Tu selfie" className={styles.fotoPreview} />
+          ) : (
+            <div className={styles.avatarVacio}>👤</div>
+          )}
+          
+          <label className={styles.botonFoto}>
+            {subiendoFoto ? 'Cargando selfie... ⏳' : (fotoUrl ? 'Cambiar Selfie 📷' : 'Sacarse Selfie (Opcional) 📷')}
+            <input 
+              type="file" 
+              accept="image/*" 
+              capture="user" 
+              style={{ display: 'none' }} 
+              onChange={manejarSubidaFoto}
+              disabled={subiendoFoto}
+            />
+          </label>
+        </div>
+
         <input 
           type="text" 
-          placeholder="Ej: Tía Marta" 
+          placeholder="Nombre o Apodo (Ej: Lean Mussi)" 
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
-          style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '16px' }}
+          className={styles.input}
           required
         />
+        <input 
+          type="number" 
+          placeholder="Número de Mesa (Ej: 5)" 
+          value={numeroMesa}
+          onChange={(e) => setNumeroMesa(e.target.value)}
+          className={styles.input}
+          min="1"
+          required
+        />
+
         <button 
           type="submit" 
-          disabled={cargando}
-          style={{ 
-            padding: '12px', 
-            borderRadius: '8px', 
-            border: 'none', 
-            backgroundColor: '#007BFF', 
-            color: 'white', 
-            fontSize: '16px', 
-            fontWeight: 'bold',
-            cursor: cargando ? 'not-allowed' : 'pointer'
-          }}
+          disabled={cargando || subiendoFoto}
+          className={styles.boton}
         >
-          {cargando ? 'Ingresando...' : 'Entrar al Juego'}
+          {cargando ? 'Registrando agente...' : 'Entrar al Juego'}
         </button>
       </form>
     </div>

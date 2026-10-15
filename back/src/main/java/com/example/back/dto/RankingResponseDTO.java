@@ -10,4 +10,5 @@ import lombok.Setter;
 public class RankingResponseDTO {
     private String nombre;
     private Integer puntos;
+    private String fotoPerfilUrl;
 }

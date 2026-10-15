@@ -1,5 +1,6 @@
 package com.example.back.service;
 
+import com.example.back.dto.LoginRequestDTO;
 import com.example.back.dto.RankingResponseDTO;
 import com.example.back.entity.Invitado;
 import com.example.back.repository.InvitadoRepository;
@@ -15,26 +16,39 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class InvitadoService {
 
-    private InvitadoRepository invitadoRepository;
+    private final InvitadoRepository invitadoRepository;
 
-    // Lógica del Login: Si el nombre existe, lo devuelve. Si no existe, lo crea y lo guarda.
-    public Invitado loginORegistro(String nombre) {
-        Optional<Invitado> invitadoExistente = invitadoRepository.findByNombre(nombre);
-        
+    public Invitado login(LoginRequestDTO request) {
+        Optional<Invitado> invitadoExistente = invitadoRepository.findByNombreAndNumeroMesa(
+                request.getNombre(), request.getNumeroMesa()
+        );
+
         if (invitadoExistente.isPresent()) {
-            return invitadoExistente.get();
+            Invitado invitado = invitadoExistente.get();
+            if (request.getFotoPerfilUrl() != null) {
+                invitado.setFotoPerfilUrl(request.getFotoPerfilUrl());
+                invitadoRepository.save(invitado);
+            }
+            return invitado;
         }
-        
-        Invitado nuevoInvitado = new Invitado();
-        nuevoInvitado.setNombre(nombre);
-        
-        return invitadoRepository.save(nuevoInvitado);
+
+        // Si no existía, creamos un jugador nuevo
+        Invitado nuevo = new Invitado();
+        nuevo.setNombre(request.getNombre());
+        nuevo.setNumeroMesa(request.getNumeroMesa());
+        nuevo.setFotoPerfilUrl(request.getFotoPerfilUrl());
+        nuevo.setPuntosTotales(0);
+        return invitadoRepository.save(nuevo);
     }
 
     public List<RankingResponseDTO> obtenerRanking() {
         return invitadoRepository.findTop10ByOrderByPuntosTotalesDescUltimaMisionCompletadaAsc()
                 .stream()
-                .map(invitado -> new RankingResponseDTO(invitado.getNombre(), invitado.getPuntosTotales()))
+                .map(invitado -> new RankingResponseDTO(
+                        invitado.getNombre(), 
+                        invitado.getPuntosTotales(),
+                        invitado.getFotoPerfilUrl()
+                ))
                 .toList();
     }
 }

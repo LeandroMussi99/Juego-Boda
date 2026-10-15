@@ -35,10 +35,24 @@ function App() {
         <div style={{ maxWidth: '500px', margin: '0 auto', fontFamily: 'sans-serif', padding: '10px', paddingBottom: '80px' }}>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f8f9fa', padding: '15px', borderRadius: '12px', marginBottom: '20px' }}>
-            <div>
-              <h3 style={{ margin: 0, color: '#333' }}>👤 {invitado.nombre}</h3>
-              <p style={{ margin: 0, color: '#28a745', fontWeight: 'bold' }}>⭐ {invitado.puntosTotales} Puntos</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+              
+              {invitado.fotoPerfilUrl ? (
+                <img 
+                  src={invitado.fotoPerfilUrl} 
+                  alt="Perfil" 
+                  style={{ width: '45px', height: '45px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #007BFF' }} 
+                />
+              ) : (
+                <span style={{ fontSize: '30px' }}>👤</span>
+              )}
+
+              <div>
+                <h3 style={{ margin: 0, color: '#333' }}>{invitado.nombre}</h3>
+                <p style={{ margin: 0, color: '#28a745', fontWeight: 'bold' }}>⭐ {invitado.puntosTotales} Puntos</p>
+              </div>
             </div>
+            
             <button 
               onClick={cerrarSesion}
               style={{ background: 'none', border: '1px solid #dc3545', color: '#dc3545', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}

@@ -19,8 +19,14 @@ public class Invitado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nombre;
+
+    @Column(name = "numero_mesa", nullable = false)
+    private Integer numeroMesa;
+
+    @Column(name = "foto_perfil_url")
+    private String fotoPerfilUrl;
 
     @Column(name = "puntos_totales")
     private Integer puntosTotales = 0;

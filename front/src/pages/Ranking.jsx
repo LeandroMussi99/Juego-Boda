@@ -38,6 +38,13 @@ const Ranking = () => {
               <span className={styles.posicionNumero}>
                 {obtenerMedalla(index)}
               </span>
+              
+              {jugador.fotoPerfilUrl ? (
+                <img src={jugador.fotoPerfilUrl} alt={jugador.nombre} className={styles.avatar} />
+              ) : (
+                <div className={styles.avatarVacio}>👤</div>
+              )}
+
               <span className={styles.nombre}>{jugador.nombre}</span>
             </div>
             

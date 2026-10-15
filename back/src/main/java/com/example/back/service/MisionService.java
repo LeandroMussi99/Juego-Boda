@@ -10,7 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MisionService {
     
-    private MisionRepository misionRepository;
+    private final MisionRepository misionRepository;
 
     public List<Mision> obtenerTodas() {
         return misionRepository.findAll();

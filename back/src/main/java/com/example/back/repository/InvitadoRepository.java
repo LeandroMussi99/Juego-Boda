@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface InvitadoRepository extends JpaRepository<Invitado, Long> {
-    Optional<Invitado> findByNombre(String nombre);
+    Optional<Invitado> findByNombreAndNumeroMesa(String nombre, Integer numeroMesa);
     
     List<Invitado> findTop10ByOrderByPuntosTotalesDescUltimaMisionCompletadaAsc();
 }

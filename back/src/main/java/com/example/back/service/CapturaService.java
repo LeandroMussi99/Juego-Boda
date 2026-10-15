@@ -20,9 +20,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CapturaService {
     
-    private CapturaRepository capturaRepository;
-    private InvitadoRepository invitadoRepository;
-    private MisionRepository misionRepository;
+    private final CapturaRepository capturaRepository;
+    private final InvitadoRepository invitadoRepository;
+    private final MisionRepository misionRepository;
 
     @Transactional
     public Captura registrarCaptura(CapturaRequestDTO request) {

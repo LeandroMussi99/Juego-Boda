@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CapturaController {
 
-    private CapturaService capturaService;
+    private final CapturaService capturaService;
 
     @PostMapping
     public ResponseEntity<?> registrarCaptura(@RequestBody CapturaRequestDTO request) {
