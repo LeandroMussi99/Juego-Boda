@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Ranking from './pages/Ranking';
+import AdminPanel from './pages/AdminPanel';
 import ListaMisiones from './components/ListaMisiones';
 import MenuNavegacion from './components/MenuNavegacion';
 
@@ -64,9 +65,10 @@ function App() {
           <Routes>
             <Route path="/" element={<ListaMisiones invitadoId={invitado.id} onMisionCompletada={sumarPuntos} />} />
             <Route path="/ranking" element={<Ranking />} />
+            {invitado.esAdmin && <Route path="/admin" element={<AdminPanel adminActual={invitado} />} />}
           </Routes>
           
-          <MenuNavegacion />
+          <MenuNavegacion esAdmin={invitado.esAdmin} />
           
         </div>
       )}

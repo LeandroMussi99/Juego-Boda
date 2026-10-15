@@ -51,4 +51,26 @@ public class InvitadoService {
                 ))
                 .toList();
     }
+
+    public List<Invitado> obtenerTodos() {
+        return invitadoRepository.findAll();
+    }
+
+    public Invitado hacerAdmin(Long id) {
+        Invitado invitado = invitadoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Invitado no encontrado"));
+        invitado.setEsAdmin(true);
+        return invitadoRepository.save(invitado);
+    }
+
+    public Invitado quitarAdmin(Long id) {
+        if (id == 1L) {
+            throw new RuntimeException("Protocolo de seguridad: No se puede degradar al Super Admin supremo.");
+        }
+        
+        Invitado invitado = invitadoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Invitado no encontrado"));
+        invitado.setEsAdmin(false);
+        return invitadoRepository.save(invitado);
+    }
 }

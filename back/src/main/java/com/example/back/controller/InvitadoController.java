@@ -30,4 +30,19 @@ public class InvitadoController {
     public ResponseEntity<List<RankingResponseDTO>> obtenerRanking() {
         return ResponseEntity.ok(invitadoService.obtenerRanking());
     }
+
+    @GetMapping
+    public ResponseEntity<List<Invitado>> obtenerTodos() {
+        return ResponseEntity.ok(invitadoService.obtenerTodos());
+    }
+
+    @PutMapping("/{id}/admin")
+    public ResponseEntity<Invitado> hacerAdmin(@PathVariable Long id) {
+        return ResponseEntity.ok(invitadoService.hacerAdmin(id));
+    }
+
+    @PutMapping("/{id}/quitar-admin")
+    public ResponseEntity<Invitado> quitarAdmin(@PathVariable Long id) {
+        return ResponseEntity.ok(invitadoService.quitarAdmin(id));
+    }
 }

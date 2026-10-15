@@ -36,4 +36,7 @@ public class Invitado {
 
     @Column(name = "ultima_mision_completada")
     private LocalDateTime ultimaMisionCompletada;
+
+    @Column(name = "es_admin")
+    private Boolean esAdmin = false;
 }
