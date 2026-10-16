@@ -10,4 +10,6 @@ public interface CapturaRepository extends JpaRepository<Captura, Long> {
     boolean existsByInvitadoIdAndMisionId(Long invitadoId, Long misionId);
 
     List<Captura> findByInvitadoId(Long invitadoId);
+
+    List<Captura> findByEstadoValidacion(String estadoValidacion);
 }

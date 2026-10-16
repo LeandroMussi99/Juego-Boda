@@ -1,6 +1,7 @@
 package com.example.back.controller;
 
 import com.example.back.dto.CapturaRequestDTO;
+import com.example.back.dto.CapturaResponseDTO;
 import com.example.back.entity.Captura;
 import com.example.back.service.CapturaService;
 
@@ -33,4 +34,22 @@ public class CapturaController {
     public ResponseEntity<List<Long>> obtenerCompletadas(@PathVariable Long invitadoId) {
         return ResponseEntity.ok(capturaService.obtenerMisionesCompletadas(invitadoId));
     }
+
+    @GetMapping("/pendientes")
+    public ResponseEntity<List<CapturaResponseDTO>> obtenerPendientes() {
+        return ResponseEntity.ok(capturaService.obtenerPendientes());
+    }
+
+    @PutMapping("/{id}/aprobar")
+    public ResponseEntity<Void> aprobarCaptura(@PathVariable Long id) {
+        capturaService.aprobarCaptura(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}/rechazar")
+    public ResponseEntity<Void> rechazarCaptura(@PathVariable Long id) {
+        capturaService.rechazarCaptura(id);
+        return ResponseEntity.ok().build();
+    }
+    
 }

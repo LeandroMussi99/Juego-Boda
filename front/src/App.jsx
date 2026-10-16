@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Ranking from './pages/Ranking';
 import AdminPanel from './pages/AdminPanel';
 import ListaMisiones from './components/ListaMisiones';
 import MenuNavegacion from './components/MenuNavegacion';
+import './App.css';
 
 function App() {
   const [invitado, setInvitado] = useState(() => {
@@ -12,14 +13,17 @@ function App() {
     return invitadoGuardado ? JSON.parse(invitadoGuardado) : null;
   });
 
+  const navigate = useNavigate();
+
   const manejarLogin = (datos) => {
     setInvitado(datos);
     localStorage.setItem('invitadoBoda', JSON.stringify(datos));
   };
 
   const cerrarSesion = () => {
-    setInvitado(null);
     localStorage.removeItem('invitadoBoda');
+    setInvitado(null);
+    navigate('/'); 
   };
 
   const sumarPuntos = (puntosGanados) => {
@@ -28,51 +32,39 @@ function App() {
     localStorage.setItem('invitadoBoda', JSON.stringify(invitadoActualizado));
   };
 
+  if (!invitado) {
+    return <Login alCompletarLogin={manejarLogin} />;
+  }
+
   return (
-    <BrowserRouter>
-      {!invitado ? (
-        <Login alCompletarLogin={manejarLogin} />
-      ) : (
-        <div style={{ maxWidth: '500px', margin: '0 auto', fontFamily: 'sans-serif', padding: '10px', paddingBottom: '80px' }}>
-          
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f8f9fa', padding: '15px', borderRadius: '12px', marginBottom: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              
-              {invitado.fotoPerfilUrl ? (
-                <img 
-                  src={invitado.fotoPerfilUrl} 
-                  alt="Perfil" 
-                  style={{ width: '45px', height: '45px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #007BFF' }} 
-                />
-              ) : (
-                <span style={{ fontSize: '30px' }}>👤</span>
-              )}
-
-              <div>
-                <h3 style={{ margin: 0, color: '#333' }}>{invitado.nombre}</h3>
-                <p style={{ margin: 0, color: '#28a745', fontWeight: 'bold' }}>⭐ {invitado.puntosTotales} Puntos</p>
-              </div>
-            </div>
-            
-            <button 
-              onClick={cerrarSesion}
-              style={{ background: 'none', border: '1px solid #dc3545', color: '#dc3545', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}
-            >
-              Salir
-            </button>
+    <div className="app-container">
+      
+      <header className="app-header">
+        <div className="perfil-info">
+          {invitado.fotoPerfilUrl ? (
+            <img src={invitado.fotoPerfilUrl} alt="Perfil" className="avatar-header" />
+          ) : (
+            <span className="avatar-placeholder">👤</span>
+          )}
+          <div>
+            <h3 className="nombre-header">{invitado.nombre}</h3>
+            <p className="puntos-header">⭐ {invitado.puntosTotales} Puntos</p>
           </div>
-
-          <Routes>
-            <Route path="/" element={<ListaMisiones invitadoId={invitado.id} onMisionCompletada={sumarPuntos} />} />
-            <Route path="/ranking" element={<Ranking />} />
-            {invitado.esAdmin && <Route path="/admin" element={<AdminPanel adminActual={invitado} />} />}
-          </Routes>
-          
-          <MenuNavegacion esAdmin={invitado.esAdmin} />
-          
         </div>
-      )}
-    </BrowserRouter>
+        
+        <button onClick={cerrarSesion} className="btn-salir">Salir</button>
+      </header>
+
+      <Routes>
+        <Route path="/" element={<ListaMisiones invitadoId={invitado.id} onMisionCompletada={sumarPuntos} />} />
+        <Route path="/ranking" element={<Ranking />} />
+        {invitado.esAdmin && <Route path="/admin" element={<AdminPanel adminActual={invitado} />} />}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+      
+      <MenuNavegacion esAdmin={invitado.esAdmin} />
+      
+    </div>
   );
 }
 
